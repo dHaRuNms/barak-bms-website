@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { AboutMission } from './components/AboutMission';
 import { ExplodedStack } from './components/ExplodedStack';
+import { ProductShowcase } from './components/ProductShowcase';
 import { LiveBmsSimulator } from './components/LiveBmsSimulator';
 import { TechnicalMatrix } from './components/TechnicalMatrix';
 import { Footer } from './components/Footer';
@@ -23,13 +24,16 @@ export const App: React.FC = () => {
       {/* 3. The Exploded Stack (Core 300vh Lightship-Style Scrubbed Section with Video Placeholders) */}
       <ExplodedStack />
 
-      {/* 4. Interactive BMS Hardware & Cell Telemetry HUD */}
+      {/* 4. Unified Digital Intelligence & Interactive Clara AI Explorer */}
+      <ProductShowcase />
+
+      {/* 5. Interactive BMS Hardware & Cell Telemetry HUD */}
       <LiveBmsSimulator />
 
-      {/* 5. Why Choose Us (2x2 Bento-Box Grid with Cursor Tracking Spotlight) */}
+      {/* 6. Why Choose Us (2x2 Bento-Box Grid with Cursor Tracking Spotlight) */}
       <TechnicalMatrix />
 
-      {/* 6. Stark Minimal Terminal Footer */}
+      {/* 7. Stark Minimal Terminal Footer */}
       <Footer />
 
     </div>

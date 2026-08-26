@@ -6,7 +6,8 @@ import {
   Code2, 
   Layers, 
   Bot, 
-  Video 
+  Zap,
+  CheckCircle2
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,9 +17,9 @@ export const ExplodedStack: React.FC = () => {
   const stickyRef = useRef<HTMLDivElement | null>(null);
   
   // Video & Card Container Refs for States 1, 2, 3
-  const state1VideoRef = useRef<HTMLDivElement | null>(null);
-  const state2VideoRef = useRef<HTMLDivElement | null>(null);
-  const state3VideoRef = useRef<HTMLDivElement | null>(null);
+  const state1MediaRef = useRef<HTMLDivElement | null>(null);
+  const state2MediaRef = useRef<HTMLDivElement | null>(null);
+  const state3MediaRef = useRef<HTMLDivElement | null>(null);
 
   const state1ContentRef = useRef<HTMLDivElement | null>(null);
   const state2ContentRef = useRef<HTMLDivElement | null>(null);
@@ -32,9 +33,9 @@ export const ExplodedStack: React.FC = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Set initial states
-      gsap.set(state1VideoRef.current, { opacity: 1, scale: 1, filter: 'blur(0px)' });
-      gsap.set(state2VideoRef.current, { opacity: 0, scale: 0.95, filter: 'blur(10px)' });
-      gsap.set(state3VideoRef.current, { opacity: 0, scale: 0.95, filter: 'blur(10px)' });
+      gsap.set(state1MediaRef.current, { opacity: 1, scale: 1, filter: 'blur(0px)' });
+      gsap.set(state2MediaRef.current, { opacity: 0, scale: 0.95, filter: 'blur(10px)' });
+      gsap.set(state3MediaRef.current, { opacity: 0, scale: 0.95, filter: 'blur(10px)' });
 
       gsap.set(state1ContentRef.current, { opacity: 1, x: 0, filter: 'blur(0px)' });
       gsap.set(state2ContentRef.current, { opacity: 0, x: 40, filter: 'blur(10px)' });
@@ -55,20 +56,20 @@ export const ExplodedStack: React.FC = () => {
 
             if (p < 0.33) {
               setActiveStep(1);
-              if (activeStateLabelRef.current) activeStateLabelRef.current.innerText = '01 // HARDWARE SOLUTIONS';
+              if (activeStateLabelRef.current) activeStateLabelRef.current.innerText = 'FIG. 1 // STATE 01: HARDWARE BMS ARCHITECTURE';
             } else if (p < 0.66) {
               setActiveStep(2);
-              if (activeStateLabelRef.current) activeStateLabelRef.current.innerText = '02 // SOFTWARE & SIMULATION';
+              if (activeStateLabelRef.current) activeStateLabelRef.current.innerText = 'FIG. 2 // STATE 02: SOFTWARE & DIGITAL TWIN';
             } else {
               setActiveStep(3);
-              if (activeStateLabelRef.current) activeStateLabelRef.current.innerText = '03 // FLEET & AI OPS';
+              if (activeStateLabelRef.current) activeStateLabelRef.current.innerText = 'FIG. 3 // STATE 03: COMMERCIAL FLEET & AI OPS';
             }
           }
         }
       });
 
       // TRANSITION 1 -> 2 (around progress 0.33 to 0.5)
-      tl.to(state1VideoRef.current, {
+      tl.to(state1MediaRef.current, {
         opacity: 0,
         scale: 1.05,
         filter: 'blur(10px)',
@@ -82,7 +83,7 @@ export const ExplodedStack: React.FC = () => {
         duration: 1,
         ease: 'power2.inOut'
       }, 1)
-      .to(state2VideoRef.current, {
+      .to(state2MediaRef.current, {
         opacity: 1,
         scale: 1,
         filter: 'blur(0px)',
@@ -98,7 +99,7 @@ export const ExplodedStack: React.FC = () => {
       }, 1.2);
 
       // TRANSITION 2 -> 3 (around progress 0.66 to 0.85)
-      tl.to(state2VideoRef.current, {
+      tl.to(state2MediaRef.current, {
         opacity: 0,
         scale: 1.05,
         filter: 'blur(10px)',
@@ -112,7 +113,7 @@ export const ExplodedStack: React.FC = () => {
         duration: 1,
         ease: 'power2.inOut'
       }, 2.5)
-      .to(state3VideoRef.current, {
+      .to(state3MediaRef.current, {
         opacity: 1,
         scale: 1,
         filter: 'blur(0px)',
@@ -143,21 +144,21 @@ export const ExplodedStack: React.FC = () => {
         ref={stickyRef} 
         className="sticky top-0 h-screen w-full flex flex-col justify-between p-4 sm:p-8 md:p-12 overflow-hidden bg-[#050505]"
       >
-        {/* Top Telemetry & Scrub Header */}
+        {/* Top Telemetry & Scrub Header (Prime Intellect FIG format + Lightship RV scrubber) */}
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between z-20 pb-4 border-b border-white/[0.08]">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded bg-[#0a0a0a] border border-white/10 flex items-center justify-center text-cyan-400">
+            <div className="w-8 h-8 rounded bg-[#0a0a0a] border border-white/10 flex items-center justify-center text-cyan-400">
               <Layers className="w-4 h-4" />
             </div>
             <div>
               <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest block">
-                THE EXPLODED STACK
+                THE EXPLODED STACK · SCRUBBED ARCHITECTURE
               </span>
               <span 
                 ref={activeStateLabelRef}
                 className="text-xs font-mono font-bold text-white tracking-wider"
               >
-                01 // HARDWARE SOLUTIONS
+                FIG. 1 // STATE 01: HARDWARE BMS ARCHITECTURE
               </span>
             </div>
           </div>
@@ -176,20 +177,24 @@ export const ExplodedStack: React.FC = () => {
           </div>
         </div>
 
-        {/* Center Split View (Video Slot on Left/Top, Content Pane on Right) */}
+        {/* Center Split View (Visual Media on Left, Content & Telemetry on Right) */}
         <div className="w-full max-w-7xl mx-auto my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10">
           
           {/* ============================================================ */}
-          {/* LEFT: FULL-WIDTH VIDEO & GRAPHIC CINEMATIC PLACEHOLDER SLOTS */}
+          {/* LEFT: CINEMATIC HARDWARE & DIGITAL VISUAL VIEWPORT (7 COLS) */}
           {/* ============================================================ */}
-          <div className="lg:col-span-7 relative h-[280px] sm:h-[380px] md:h-[450px] w-full rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-2xl">
+          <div className="lg:col-span-7 relative h-[300px] sm:h-[400px] md:h-[480px] w-full rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-2xl energy-stream-border">
             
-            {/* STATE 1 VIDEO PLACEHOLDER (PCB Hardware) */}
+            {/* STATE 1: PCB HARDWARE SOLUTIONS */}
             <div 
-              ref={state1VideoRef} 
-              className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 bg-gradient-to-br from-[#0c131a] to-[#05080c] will-change-transform"
+              ref={state1MediaRef} 
+              className="absolute inset-0 w-full h-full will-change-transform"
             >
-              {/* Overlay Video Element for User Drop: /assets/state1-pcb-hardware.mp4 */}
+              <img 
+                src="./assets/state1-pcb-hardware.jpg" 
+                alt="Barak Microelectronics Automotive BMS Hardware PCB"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
               <video 
                 autoPlay 
                 loop 
@@ -197,40 +202,40 @@ export const ExplodedStack: React.FC = () => {
                 playsInline 
                 className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none"
               >
-                <source src="/assets/state1-pcb-hardware.mp4" type="video/mp4" />
+                <source src="./assets/state1-pcb-hardware.mp4" type="video/mp4" />
               </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/60" />
 
-              <div className="relative z-10 flex justify-between items-center text-[10px] font-mono text-emerald-400">
-                <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/30 flex items-center gap-1.5">
+              {/* HUD Overlay Badges */}
+              <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-[10px] font-mono">
+                <span className="px-2.5 py-1 rounded bg-[#050505]/90 border border-emerald-500/40 text-emerald-400 backdrop-blur-md flex items-center gap-1.5 shadow-lg">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  FEED: PCB_SURFACE_MACRO
+                  FEED: PCB_SURFACE_ASIL_D
                 </span>
-                <span className="text-slate-400">AEC-Q100 AUTOMOTIVE</span>
+                <span className="px-2.5 py-1 rounded bg-[#050505]/90 border border-white/10 text-slate-300 backdrop-blur-md">
+                  AEC-Q100 GRADE 1
+                </span>
               </div>
 
-              {/* Graphic Wireframe Schematic */}
-              <div className="relative z-10 my-auto text-center space-y-2">
-                <div className="inline-block p-4 rounded-2xl bg-[#050505]/80 border border-emerald-500/30 shadow-emerald-glow backdrop-blur-md">
-                  <Cpu className="w-12 h-12 text-emerald-400 mx-auto mb-2" />
-                  <span className="text-xs font-mono font-bold text-white block">Next-Gen BMS Silicon Core</span>
-                  <span className="text-[10px] font-mono text-slate-400 block">±1.0mV Voltage ADC | Dual Contactor Isolation</span>
+              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#050505]/90 border border-white/10 backdrop-blur-md flex items-center justify-between text-[11px] font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Cpu className="w-4 h-4 text-emerald-400" />
+                  <span>Dual Isolation & Active Cell Balancing Core</span>
                 </div>
-              </div>
-
-              <div className="relative z-10 p-3 rounded-lg bg-[#050505]/90 border border-white/10 text-[10px] font-mono text-slate-400 flex items-center gap-2">
-                <Video className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="truncate">
-                  Video Slot: "Close up pan over a sleek, industrial black Printed Circuit Board (PCB). Emerald green light glows softly from micro-components."
-                </span>
+                <span className="text-emerald-400 font-bold">±1.0mV Precision</span>
               </div>
             </div>
 
-            {/* STATE 2 VIDEO PLACEHOLDER (Battery Digital Twin & Open EDA) */}
+            {/* STATE 2: BATTERY DIGITAL TWIN & OPEN EDA */}
             <div 
-              ref={state2VideoRef} 
-              className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 bg-gradient-to-br from-[#0c161d] to-[#04080d] will-change-transform"
+              ref={state2MediaRef} 
+              className="absolute inset-0 w-full h-full will-change-transform"
             >
-              {/* Overlay Video Element for User Drop: /assets/state2-software-emulator.mp4 */}
+              <img 
+                src="./assets/state2-software-emulator.jpg" 
+                alt="Battery Digital Twin Electrochemical Emulator & Open EDA"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
               <video 
                 autoPlay 
                 loop 
@@ -238,39 +243,39 @@ export const ExplodedStack: React.FC = () => {
                 playsInline 
                 className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none"
               >
-                <source src="/assets/state2-software-emulator.mp4" type="video/mp4" />
+                <source src="./assets/state2-software-emulator.mp4" type="video/mp4" />
               </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/60" />
 
-              <div className="relative z-10 flex justify-between items-center text-[10px] font-mono text-cyan-400">
-                <span className="px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/30 flex items-center gap-1.5">
+              <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-[10px] font-mono">
+                <span className="px-2.5 py-1 rounded bg-[#050505]/90 border border-cyan-500/40 text-cyan-400 backdrop-blur-md flex items-center gap-1.5 shadow-lg">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                  FEED: HIL_VIRTUAL_TWIN
+                  FEED: HIL_VIRTUAL_PACK_TWIN
                 </span>
-                <span className="text-slate-400">10,000 MONTE CARLO CYCLES</span>
+                <span className="px-2.5 py-1 rounded bg-[#050505]/90 border border-white/10 text-slate-300 backdrop-blur-md">
+                  10,000 MONTE CARLO RUNS
+                </span>
               </div>
 
-              <div className="relative z-10 my-auto text-center space-y-2">
-                <div className="inline-block p-4 rounded-2xl bg-[#050505]/80 border border-cyan-500/30 shadow-cyan-glow backdrop-blur-md">
-                  <Code2 className="w-12 h-12 text-cyan-400 mx-auto mb-2" />
-                  <span className="text-xs font-mono font-bold text-white block">Electrochemical Emulator</span>
-                  <span className="text-[10px] font-mono text-slate-400 block">Virtual Battery Stress-Testing & Open EDA</span>
+              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#050505]/90 border border-white/10 backdrop-blur-md flex items-center justify-between text-[11px] font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Code2 className="w-4 h-4 text-cyan-400" />
+                  <span>Open-Source KiCad EDA & Virtual Impedance</span>
                 </div>
-              </div>
-
-              <div className="relative z-10 p-3 rounded-lg bg-[#050505]/90 border border-white/10 text-[10px] font-mono text-slate-400 flex items-center gap-2">
-                <Video className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                <span className="truncate">
-                  Video Slot: "A holographic 3D wireframe of a battery pack floating over a dark glowing grid shifting between metallic gray and cyan data points."
-                </span>
+                <span className="text-cyan-400 font-bold">144V / 87% SOC</span>
               </div>
             </div>
 
-            {/* STATE 3 VIDEO PLACEHOLDER (Fleet Neural Dispatch & Clara Bot) */}
+            {/* STATE 3: COMMERCIAL FLEET & CLARA AI */}
             <div 
-              ref={state3VideoRef} 
-              className="absolute inset-0 w-full h-full flex flex-col justify-between p-6 bg-gradient-to-br from-[#101018] to-[#050508] will-change-transform"
+              ref={state3MediaRef} 
+              className="absolute inset-0 w-full h-full will-change-transform"
             >
-              {/* Overlay Video Element for User Drop: /assets/state3-fleet-neural.mp4 */}
+              <img 
+                src="./assets/state3-fleet-neural.jpg" 
+                alt="Clara AI Diagnostic Copilot & Urban EV Fleet Telemetry Network"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
               <video 
                 autoPlay 
                 loop 
@@ -278,66 +283,68 @@ export const ExplodedStack: React.FC = () => {
                 playsInline 
                 className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none"
               >
-                <source src="/assets/state3-fleet-neural.mp4" type="video/mp4" />
+                <source src="./assets/state3-fleet-neural.mp4" type="video/mp4" />
               </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/60" />
 
-              <div className="relative z-10 flex justify-between items-center text-[10px] font-mono text-emerald-400">
-                <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/30 flex items-center gap-1.5">
+              <div className="absolute top-4 left-4 right-4 flex justify-between items-center text-[10px] font-mono">
+                <span className="px-2.5 py-1 rounded bg-[#050505]/90 border border-emerald-500/40 text-emerald-400 backdrop-blur-md flex items-center gap-1.5 shadow-lg">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  FEED: NEURAL_FLEET_DISPATCH
+                  FEED: URBAN_FLEET_TELEMETRY
                 </span>
-                <span className="text-slate-400">SUB-150MS ROUTING</span>
+                <span className="px-2.5 py-1 rounded bg-[#050505]/90 border border-white/10 text-slate-300 backdrop-blur-md">
+                  LATENCY &lt; 150MS
+                </span>
               </div>
 
-              <div className="relative z-10 my-auto text-center space-y-2">
-                <div className="inline-block p-4 rounded-2xl bg-[#050505]/80 border border-white/20 shadow-2xl backdrop-blur-md">
-                  <Bot className="w-12 h-12 text-cyan-400 mx-auto mb-2" />
-                  <span className="text-xs font-mono font-bold text-white block">Clara AI & Mobility Network</span>
-                  <span className="text-[10px] font-mono text-slate-400 block">Real-Time EV Telematics & Auto-Rickshaw Dispatch</span>
+              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#050505]/90 border border-white/10 backdrop-blur-md flex items-center justify-between text-[11px] font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Bot className="w-4 h-4 text-cyan-400" />
+                  <span>Clara AI Diagnostics & Real-Time EV Dispatch</span>
                 </div>
-              </div>
-
-              <div className="relative z-10 p-3 rounded-lg bg-[#050505]/90 border border-white/10 text-[10px] font-mono text-slate-400 flex items-center gap-2">
-                <Video className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                <span className="truncate">
-                  Video Slot: "Abstract visualization of a neural network in dark space. Glowing white and cyan nodes connecting via fiber-optic light pulses."
-                </span>
+                <span className="text-emerald-400 font-bold">28,450 Nodes</span>
               </div>
             </div>
 
           </div>
 
           {/* ============================================================ */}
-          {/* RIGHT: NARRATIVE CONTENT PANES WITH SCRUBBED MORPHING STATES */}
+          {/* RIGHT: NARRATIVE CONTENT PANES WITH SCRUBBED MORPHING (5 COLS) */}
           {/* ============================================================ */}
-          <div className="lg:col-span-5 relative h-[320px] sm:h-[360px] flex items-center">
+          <div className="lg:col-span-5 relative h-[360px] sm:h-[400px] flex items-center">
             
             {/* STATE 1 CONTENT */}
             <div 
               ref={state1ContentRef} 
               className="absolute inset-0 flex flex-col justify-center space-y-4 will-change-transform"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-emerald-950/70 border border-emerald-500/30 text-[10px] font-mono text-emerald-300 w-fit">
-                <Cpu className="w-3.5 h-3.5 text-emerald-400" />
-                <span>STATE 01 // HARDWARE SOLUTIONS</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-500/30 font-semibold uppercase">
+                  SPEC_01 // HARDWARE
+                </span>
+                <span className="text-[10px] font-mono text-slate-500">1.1 · ARCHITECTURE</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Next-Generation BMS
+              <h3 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-tight leading-tight">
+                Next-Generation BMS Hardware
               </h3>
 
               <p className="text-sm text-slate-300 leading-relaxed font-body">
-                Our proprietary Battery Management System delivers zero-compromise predictive intelligence, continuous micro-impedance monitoring, and automotive-grade reliability for 2W/3W fleets, commercial EVs, and stationary ESS.
+                Engineered for automotive-grade reliability under extreme thermal and vibration profiles. Combines high-voltage galvanic isolation with sub-15µs hardware trip execution.
               </p>
 
-              <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono">
-                <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-white/10">
-                  <span className="text-slate-500 block text-[9px]">SAMPLING PRECISION</span>
-                  <span className="text-white font-semibold">±1.0 mV ADC</span>
+              <div className="space-y-2 pt-2 text-xs font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>±1.0mV ADC precision with active cell balance topology</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-white/10">
-                  <span className="text-slate-500 block text-[9px]">BALANCING ARCH</span>
-                  <span className="text-emerald-400 font-semibold">Active + Passive</span>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Dual redundant contactor isolation & micro-impedance tracking</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Sub-15µs hardware overcurrent and thermal runaway interrupt</span>
                 </div>
               </div>
             </div>
@@ -347,27 +354,33 @@ export const ExplodedStack: React.FC = () => {
               ref={state2ContentRef} 
               className="absolute inset-0 flex flex-col justify-center space-y-4 will-change-transform"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-cyan-950/70 border border-cyan-500/30 text-[10px] font-mono text-cyan-300 w-fit">
-                <Code2 className="w-3.5 h-3.5 text-cyan-400" />
-                <span>STATE 02 // SOFTWARE & SIMULATION</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded border border-cyan-500/30 font-semibold uppercase">
+                  SPEC_02 // SOFTWARE & SIM
+                </span>
+                <span className="text-[10px] font-mono text-slate-500">2.1 · DIGITAL TWIN</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Software & Digital Ecosystem
+              <h3 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-tight leading-tight">
+                Open EDA & Electrochemical Twin
               </h3>
 
               <p className="text-sm text-slate-300 leading-relaxed font-body">
-                Democratizing power electronics with community-driven open EDA PCB tooling, paired with a virtual electrochemical battery emulator for rapid Hardware-In-The-Loop (HIL) safety validation.
+                Zero vendor lock-in. We empower hardware engineering teams with open-source PCB schematic tooling and high-precision virtual battery simulation.
               </p>
 
-              <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono">
-                <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-white/10">
-                  <span className="text-slate-500 block text-[9px]">EDA ECOSYSTEM</span>
-                  <span className="text-white font-semibold">Open PCB Tooling</span>
+              <div className="space-y-2 pt-2 text-xs font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span>Open KiCad schematic modules & verified BOM libraries</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-white/10">
-                  <span className="text-slate-500 block text-[9px]">DIGITAL TWIN</span>
-                  <span className="text-cyan-400 font-semibold">Real-Time HIL</span>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span>Real-time Hardware-In-The-Loop (HIL) electrochemical twin</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span>Pre-silicon fault injection and aging degradation forecasting</span>
                 </div>
               </div>
             </div>
@@ -377,27 +390,33 @@ export const ExplodedStack: React.FC = () => {
               ref={state3ContentRef} 
               className="absolute inset-0 flex flex-col justify-center space-y-4 will-change-transform"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-emerald-950/70 border border-emerald-500/30 text-[10px] font-mono text-emerald-300 w-fit">
-                <Bot className="w-3.5 h-3.5 text-emerald-400" />
-                <span>STATE 03 // FLEET & AI OPS</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded border border-emerald-500/30 font-semibold uppercase">
+                  SPEC_03 // FLEET & AI
+                </span>
+                <span className="text-[10px] font-mono text-slate-500">3.1 · INTELLIGENCE</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Commercial Fleet & Clara AI
+              <h3 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-tight leading-tight">
+                Clara AI & Mobility Dispatch
               </h3>
 
               <p className="text-sm text-slate-300 leading-relaxed font-body">
-                Clara Bot AI technical copilot for automated hardware diagnostics, combined with an urban electric ride-hailing dispatch engine with direct BMS battery telemetry synchronization.
+                AI technical copilot that interprets raw CAN 2.0B frames and live telemetry to predict pack degradation, combined with turn-key ride-hailing dispatch for EV fleets.
               </p>
 
-              <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono">
-                <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-white/10">
-                  <span className="text-slate-500 block text-[9px]">AI COPILOT</span>
-                  <span className="text-white font-semibold">Clara Diagnostic</span>
+              <div className="space-y-2 pt-2 text-xs font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Clara Bot real-time diagnostic anomaly detection copilot</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#0a0a0a] border border-white/10">
-                  <span className="text-slate-500 block text-[9px]">DISPATCH LATENCY</span>
-                  <span className="text-emerald-400 font-semibold">&lt; 150ms Telematics</span>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Sub-150ms passenger matching with live battery health routing</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Automated driver OTP verification & zero-commission architecture</span>
                 </div>
               </div>
             </div>
@@ -408,7 +427,10 @@ export const ExplodedStack: React.FC = () => {
 
         {/* Bottom Micro Navigation Ticker */}
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between text-[10px] font-mono text-slate-500 border-t border-white/[0.06] pt-3 z-20">
-          <span>// SCROLL TO PHYSICALLY ASSEMBLE ARCHITECTURE</span>
+          <span className="flex items-center gap-2">
+            <Zap className="w-3 h-3 text-cyan-400" />
+            <span>// SCROLL TO PHYSICALLY ASSEMBLE ARCHITECTURE</span>
+          </span>
           <div className="flex gap-4">
             <span className={activeStep === 1 ? 'text-emerald-400 font-bold' : ''}>[01 HARDWARE]</span>
             <span className={activeStep === 2 ? 'text-cyan-400 font-bold' : ''}>[02 SOFTWARE]</span>

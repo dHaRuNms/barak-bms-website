@@ -3,7 +3,9 @@ import {
   Zap, 
   Activity, 
   Radio, 
-  AlertTriangle 
+  AlertTriangle,
+  Layers,
+  CheckCircle2
 } from 'lucide-react';
 
 interface CellData {
@@ -17,7 +19,7 @@ export const LiveBmsSimulator: React.FC = () => {
   const [cRate, setCRate] = useState<number>(1.2);
   const [ambientTemp, setAmbientTemp] = useState<number>(28);
   const [injectFault, setInjectFault] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'matrix' | 'canbus'>('matrix');
+  const [activeTab, setActiveTab] = useState<'matrix' | 'canbus' | 'hardware'>('matrix');
   const [soc, setSoc] = useState<number>(84.6);
   const soh = 98.2;
 
@@ -86,23 +88,26 @@ export const LiveBmsSimulator: React.FC = () => {
   const isWarning = deltaV > 40 || maxTemp > 45;
 
   return (
-    <section id="simulator" className="py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 bg-[#050505]">
+    <section id="simulator" className="py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 bg-[#050505]">
       
-      {/* Header */}
+      {/* Header (Prime Intellect + ON.energy telemetry layout) */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-white/[0.06]">
         <div>
           <div className="inline-flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-slate-500 uppercase mb-2">
             <Radio className="w-3.5 h-3.5 text-cyan-400" />
-            <span>// HARDWARE-IN-THE-LOOP TELEMETRY HUD</span>
+            <span>// HARDWARE-IN-THE-LOOP (HIL) TELEMETRY BENCH</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-[-0.03em]">
-            Interactive BMS Cell Simulator
+          <h2 className="text-3xl sm:text-5xl font-sans font-bold text-white tracking-[-0.03em]">
+            Interactive BMS Simulator
           </h2>
+          <p className="text-slate-400 text-sm font-normal mt-2 max-w-2xl font-body">
+            Real-time 8S cell telemetry HUD reflecting active balance physics, ambient temperature stress, and CAN 2.0B diagnostic frames.
+          </p>
         </div>
 
-        <div className="flex items-center gap-3 px-3.5 py-1.5 rounded-lg bg-[#0e0e0e] border border-white/10 font-mono text-xs">
+        <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-[#0e0e0e] border border-white/10 font-mono text-xs shadow-lg">
           <span className={`w-2 h-2 rounded-full ${isWarning ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'}`} />
-          <span className="text-slate-300">
+          <span className="text-slate-200 font-semibold">
             {isWarning ? 'BALANCING ACTUATED' : 'CELL STATUS NOMINAL'}
           </span>
           <span className="text-white/20">|</span>
@@ -111,13 +116,13 @@ export const LiveBmsSimulator: React.FC = () => {
       </div>
 
       {/* Main Terminal Container */}
-      <div className="stark-panel rounded-2xl overflow-hidden border border-white/10">
+      <div className="stark-panel rounded-2xl overflow-hidden border border-white/10 energy-stream-border">
         
         {/* Top Control Bar & Live Gauges */}
         <div className="p-4 sm:p-6 border-b border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#0a0a0a]">
           
           <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase">PACK SOC</span>
+            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">PACK SOC</span>
             <div className="text-2xl font-mono font-bold text-cyan-400 mt-1">{soc}%</div>
             <div className="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
               <div className="h-full bg-cyan-400 rounded-full" style={{ width: `${soc}%` }} />
@@ -125,7 +130,7 @@ export const LiveBmsSimulator: React.FC = () => {
           </div>
 
           <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase">PACK SOH</span>
+            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">PACK SOH</span>
             <div className="text-2xl font-mono font-bold text-emerald-400 mt-1">{soh}%</div>
             <div className="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
               <div className="h-full bg-emerald-400 rounded-full" style={{ width: `${soh}%` }} />
@@ -133,14 +138,14 @@ export const LiveBmsSimulator: React.FC = () => {
           </div>
 
           <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase">MAX DELTA (ΔV)</span>
+            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">MAX DELTA (ΔV)</span>
             <div className={`text-2xl font-mono font-bold mt-1 ${deltaV > 30 ? 'text-amber-400' : 'text-slate-200'}`}>
               {deltaV} <span className="text-xs font-normal text-slate-400">mV</span>
             </div>
           </div>
 
           <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase">THERMAL PEAK</span>
+            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">THERMAL PEAK</span>
             <div className={`text-2xl font-mono font-bold mt-1 ${maxTemp > 45 ? 'text-amber-400' : 'text-emerald-400'}`}>
               {maxTemp}°C
             </div>
@@ -193,7 +198,7 @@ export const LiveBmsSimulator: React.FC = () => {
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5" />
-              <span>{injectFault ? 'Cell 4 Drift Injected' : 'Inject Cell Imbalance'}</span>
+              <span>{injectFault ? 'Cell 4 Drift Injected' : 'Inject Imbalance'}</span>
             </button>
 
             <button
@@ -212,10 +217,10 @@ export const LiveBmsSimulator: React.FC = () => {
         </div>
 
         {/* Tab Selection */}
-        <div className="flex border-b border-white/[0.06] bg-[#0a0a0a] px-4 sm:px-6">
+        <div className="flex border-b border-white/[0.06] bg-[#0a0a0a] px-4 sm:px-6 overflow-x-auto">
           <button
             onClick={() => setActiveTab('matrix')}
-            className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors ${
+            className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors shrink-0 ${
               activeTab === 'matrix' 
                 ? 'border-cyan-400 text-cyan-300' 
                 : 'border-transparent text-slate-500 hover:text-slate-300'
@@ -225,13 +230,23 @@ export const LiveBmsSimulator: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('canbus')}
-            className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors ${
+            className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors shrink-0 ${
               activeTab === 'canbus' 
                 ? 'border-emerald-400 text-emerald-300' 
                 : 'border-transparent text-slate-500 hover:text-slate-300'
             }`}
           >
             [02] CAN 2.0B TELEMETRY STREAM
+          </button>
+          <button
+            onClick={() => setActiveTab('hardware')}
+            className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors shrink-0 ${
+              activeTab === 'hardware' 
+                ? 'border-white text-white' 
+                : 'border-transparent text-slate-500 hover:text-slate-300'
+            }`}
+          >
+            [03] BESS STORAGE TEST RIG
           </button>
         </div>
 
@@ -293,11 +308,52 @@ export const LiveBmsSimulator: React.FC = () => {
         {activeTab === 'canbus' && (
           <div className="p-4 sm:p-6 font-mono text-xs bg-[#050505] space-y-1.5 text-slate-300">
             {canLogs.map((log, idx) => (
-              <div key={idx} className="p-2 rounded bg-[#0a0a0a] border border-white/[0.06] text-slate-300">
-                <span className="text-cyan-400 mr-2">{`>`}</span>
-                {log}
+              <div key={idx} className="p-2.5 rounded bg-[#0a0a0a] border border-white/[0.06] text-slate-300 flex items-center gap-2">
+                <span className="text-cyan-400 font-bold">{`>`}</span>
+                <span>{log}</span>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Tab 3: BESS Storage Test Rig (Hardware Visual) */}
+        {activeTab === 'hardware' && (
+          <div className="p-4 sm:p-6 bg-[#050505] grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <div className="md:col-span-7 rounded-xl overflow-hidden border border-white/10 relative h-[260px] sm:h-[320px]">
+              <img 
+                src="./assets/bms-hardware-testbench.jpg" 
+                alt="Industrial BESS Lithium Energy Storage Rack & Telemetry Rig" 
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-3 left-3 text-[10px] font-mono text-emerald-400 bg-black/80 px-2.5 py-1 rounded border border-emerald-500/30">
+                LITHIUM BESS RACK 75kW/120kWh
+              </div>
+            </div>
+
+            <div className="md:col-span-5 space-y-3 font-mono text-xs">
+              <div className="flex items-center gap-2 text-white font-bold text-sm">
+                <Layers className="w-4 h-4 text-cyan-400" />
+                <span>Stationary ESS & EV Pack Architecture</span>
+              </div>
+              <p className="text-slate-400 text-xs font-normal leading-relaxed font-body">
+                Compatible with standard rack-mount stationary storage systems, heavy commercial truck chassis, and 2W/3W swappable battery formats.
+              </p>
+              <div className="space-y-1.5 pt-2 text-[11px] text-slate-300">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>High-current copper busbar topology</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Opto-isolated contactor driver stage</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Redundant emergency safety interlock</span>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
