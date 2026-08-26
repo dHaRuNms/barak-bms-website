@@ -4,32 +4,32 @@
 
 @layer base {
   :root {
-    --color-surface: #050505;
-    --color-surface-raised: #0b0b0b;
-    --color-border: rgba(255, 255, 255, 0.08);
-    --color-border-subtle: rgba(255, 255, 255, 0.04);
-    --color-cyan: #06B6D4;
-    --color-emerald: #10B981;
-    --color-lime: #78e772;
+    --color-surface: #000000;
+    --color-surface-raised: #0a0a0a;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-subtle: rgba(255, 255, 255, 0.05);
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a1a1aa;
+    --color-text-muted: #71717a;
   }
 
   html {
     scroll-behavior: smooth;
-    background-color: #050505;
-    color: #f5f7f8;
+    background-color: #000000;
+    color: #ffffff;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   body {
-    background-color: #050505;
-    color: #f5f7f8;
+    background-color: #000000;
+    color: #f4f4f5;
     overflow-x: hidden;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   ::selection {
-    background: #06B6D4;
-    color: #050505;
+    background: #ffffff;
+    color: #000000;
   }
 }
 
@@ -44,18 +44,17 @@
 
 /* Prime Intellect Stark Panels */
 .stark-panel {
-  background: rgba(11, 11, 11, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stark-panel-subtle {
-  background: rgba(7, 7, 7, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #040404;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* ON.energy Energy Stream Flow Animation */
-@keyframes energy-stream-flow {
+/* Subtle Silver Border Beam */
+@keyframes border-beam-flow {
   0% {
     opacity: 0;
     transform: translateX(-100%);
@@ -79,27 +78,27 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 50%;
+  width: 40%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #06B6D4, #10B981, transparent);
-  animation: energy-stream-flow 3s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: border-beam-flow 4s ease-in-out infinite;
   pointer-events: none;
 }
 
-/* Bento Spotlight Hover Effect */
+/* Bento Spotlight Hover Effect (Monochrome) */
 .spotlight-card {
   position: relative;
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.05),
     transparent 40%
-  ), #090909;
+  ), #070707;
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .spotlight-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* Crosshair corners */
@@ -113,7 +112,7 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
   pointer-events: none;
 }
 
@@ -133,18 +132,18 @@
 
 /* Custom minimalist scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
 }

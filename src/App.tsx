@@ -10,18 +10,18 @@ import { Footer } from './components/Footer';
 
 export const App: React.FC = () => {
   return (
-    <div className="relative min-h-screen bg-[#050505] text-slate-100 overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen bg-black text-white overflow-x-hidden selection:bg-white selection:text-black font-body">
       
       {/* Prime Intellect Fixed Navigation Header */}
       <Navbar />
 
-      {/* 1. Hero Section (Opening Sequence with 3D Silicon Point Cloud & Scrubbed Entrance) */}
+      {/* 1. Hero Section (Opening Sequence with Photorealistic BESS Infrastructure & ON.energy Telemetry) */}
       <HeroSection />
 
-      {/* 2. About / Brand Philosophy (Blur-to-Focus Reveal) */}
+      {/* 2. About / Brand Philosophy (Monochrome Blur-to-Focus Reveal) */}
       <AboutMission />
 
-      {/* 3. The Exploded Stack (Core 300vh Lightship-Style Scrubbed Section with Video Placeholders) */}
+      {/* 3. The Exploded Stack (Core 300vh Lightship-Style Scrubbed Section with Photorealistic Engineering Renders) */}
       <ExplodedStack />
 
       {/* 4. Unified Digital Intelligence & Interactive Clara AI Explorer */}

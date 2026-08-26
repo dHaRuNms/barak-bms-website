@@ -88,65 +88,65 @@ export const LiveBmsSimulator: React.FC = () => {
   const isWarning = deltaV > 40 || maxTemp > 45;
 
   return (
-    <section id="simulator" className="py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 bg-[#050505]">
+    <section id="simulator" className="py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 bg-black">
       
       {/* Header (Prime Intellect + ON.energy telemetry layout) */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-white/[0.06]">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-white/10">
         <div>
-          <div className="inline-flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-slate-500 uppercase mb-2">
-            <Radio className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-zinc-500 uppercase mb-2">
+            <Radio className="w-3.5 h-3.5 text-white" />
             <span>// HARDWARE-IN-THE-LOOP (HIL) TELEMETRY BENCH</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-sans font-bold text-white tracking-[-0.03em]">
             Interactive BMS Simulator
           </h2>
-          <p className="text-slate-400 text-sm font-normal mt-2 max-w-2xl font-body">
+          <p className="text-zinc-400 text-sm font-normal mt-2 max-w-2xl font-body">
             Real-time 8S cell telemetry HUD reflecting active balance physics, ambient temperature stress, and CAN 2.0B diagnostic frames.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-[#0e0e0e] border border-white/10 font-mono text-xs shadow-lg">
-          <span className={`w-2 h-2 rounded-full ${isWarning ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'}`} />
-          <span className="text-slate-200 font-semibold">
+        <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-zinc-950 border border-white/15 font-mono text-xs shadow-xl">
+          <span className={`w-2 h-2 rounded-full ${isWarning ? 'bg-white animate-ping' : 'bg-white'}`} />
+          <span className="text-zinc-200 font-semibold">
             {isWarning ? 'BALANCING ACTUATED' : 'CELL STATUS NOMINAL'}
           </span>
           <span className="text-white/20">|</span>
-          <span className="text-cyan-400">ΔV: {deltaV} mV</span>
+          <span className="text-white font-bold">ΔV: {deltaV} mV</span>
         </div>
       </div>
 
       {/* Main Terminal Container */}
-      <div className="stark-panel rounded-2xl overflow-hidden border border-white/10 energy-stream-border">
+      <div className="stark-panel rounded-xl overflow-hidden border border-white/15 energy-stream-border">
         
         {/* Top Control Bar & Live Gauges */}
-        <div className="p-4 sm:p-6 border-b border-white/[0.06] grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#0a0a0a]">
+        <div className="p-4 sm:p-6 border-b border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4 bg-zinc-950">
           
-          <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">PACK SOC</span>
-            <div className="text-2xl font-mono font-bold text-cyan-400 mt-1">{soc}%</div>
-            <div className="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
-              <div className="h-full bg-cyan-400 rounded-full" style={{ width: `${soc}%` }} />
+          <div className="p-3.5 rounded-lg bg-black border border-white/10">
+            <span className="text-[9px] font-mono text-zinc-500 block uppercase tracking-wider">PACK SOC</span>
+            <div className="text-2xl font-mono font-bold text-white mt-1">{soc}%</div>
+            <div className="w-full h-1 bg-zinc-800 rounded-full mt-2 overflow-hidden">
+              <div className="h-full bg-white rounded-full" style={{ width: `${soc}%` }} />
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">PACK SOH</span>
-            <div className="text-2xl font-mono font-bold text-emerald-400 mt-1">{soh}%</div>
-            <div className="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
-              <div className="h-full bg-emerald-400 rounded-full" style={{ width: `${soh}%` }} />
+          <div className="p-3.5 rounded-lg bg-black border border-white/10">
+            <span className="text-[9px] font-mono text-zinc-500 block uppercase tracking-wider">PACK SOH</span>
+            <div className="text-2xl font-mono font-bold text-white mt-1">{soh}%</div>
+            <div className="w-full h-1 bg-zinc-800 rounded-full mt-2 overflow-hidden">
+              <div className="h-full bg-white rounded-full" style={{ width: `${soh}%` }} />
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">MAX DELTA (ΔV)</span>
-            <div className={`text-2xl font-mono font-bold mt-1 ${deltaV > 30 ? 'text-amber-400' : 'text-slate-200'}`}>
-              {deltaV} <span className="text-xs font-normal text-slate-400">mV</span>
+          <div className="p-3.5 rounded-lg bg-black border border-white/10">
+            <span className="text-[9px] font-mono text-zinc-500 block uppercase tracking-wider">MAX DELTA (ΔV)</span>
+            <div className="text-2xl font-mono font-bold mt-1 text-white">
+              {deltaV} <span className="text-xs font-normal text-zinc-400">mV</span>
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#0e0e0e] border border-white/[0.06]">
-            <span className="text-[9px] font-mono text-slate-500 block uppercase tracking-wider">THERMAL PEAK</span>
-            <div className={`text-2xl font-mono font-bold mt-1 ${maxTemp > 45 ? 'text-amber-400' : 'text-emerald-400'}`}>
+          <div className="p-3.5 rounded-lg bg-black border border-white/10">
+            <span className="text-[9px] font-mono text-zinc-500 block uppercase tracking-wider">THERMAL PEAK</span>
+            <div className="text-2xl font-mono font-bold mt-1 text-white">
               {maxTemp}°C
             </div>
           </div>
@@ -154,12 +154,12 @@ export const LiveBmsSimulator: React.FC = () => {
         </div>
 
         {/* Middle Interactive Sandbox Controls */}
-        <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center border-b border-white/[0.06] bg-[#070707]">
+        <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center border-b border-white/10 bg-black">
           
           <div>
             <div className="flex justify-between text-xs font-mono mb-2">
-              <span className="text-slate-400">LOAD C-RATE:</span>
-              <span className="text-cyan-400 font-bold">{cRate.toFixed(1)} C</span>
+              <span className="text-zinc-400">LOAD C-RATE:</span>
+              <span className="text-white font-bold">{cRate.toFixed(1)} C</span>
             </div>
             <input 
               type="range" 
@@ -168,14 +168,14 @@ export const LiveBmsSimulator: React.FC = () => {
               step="0.1" 
               value={cRate}
               onChange={(e) => setCRate(parseFloat(e.target.value))}
-              className="w-full accent-cyan-400 bg-white/10 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-white bg-zinc-800 h-1.5 rounded-lg cursor-pointer"
             />
           </div>
 
           <div>
             <div className="flex justify-between text-xs font-mono mb-2">
-              <span className="text-slate-400">AMBIENT CLIMATE:</span>
-              <span className="text-emerald-400 font-bold">{ambientTemp}°C</span>
+              <span className="text-zinc-400">AMBIENT CLIMATE:</span>
+              <span className="text-white font-bold">{ambientTemp}°C</span>
             </div>
             <input 
               type="range" 
@@ -184,7 +184,7 @@ export const LiveBmsSimulator: React.FC = () => {
               step="1" 
               value={ambientTemp}
               onChange={(e) => setAmbientTemp(parseInt(e.target.value))}
-              className="w-full accent-emerald-400 bg-white/10 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-white bg-zinc-800 h-1.5 rounded-lg cursor-pointer"
             />
           </div>
 
@@ -193,8 +193,8 @@ export const LiveBmsSimulator: React.FC = () => {
               onClick={() => setInjectFault(!injectFault)}
               className={`w-full sm:w-auto px-4 py-2 rounded-lg border text-xs font-mono font-semibold transition-all flex items-center justify-center gap-2 ${
                 injectFault 
-                  ? 'bg-amber-950/60 border-amber-500 text-amber-300' 
-                  : 'bg-[#0e0e0e] border-white/10 text-slate-300 hover:border-white/30'
+                  ? 'bg-white text-black border-white' 
+                  : 'bg-zinc-950 border-white/15 text-zinc-300 hover:border-white/30'
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5" />
@@ -207,9 +207,9 @@ export const LiveBmsSimulator: React.FC = () => {
                 setCRate(2.8);
                 setTimeout(() => setCRate(1.2), 2000);
               }}
-              className="w-full sm:w-auto px-4 py-2 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-xs font-mono hover:bg-cyan-900/50 transition-all flex items-center justify-center gap-1.5"
+              className="w-full sm:w-auto px-4 py-2 rounded-lg bg-zinc-900 border border-white/20 text-white text-xs font-mono hover:bg-zinc-800 transition-all flex items-center justify-center gap-1.5"
             >
-              <Zap className="w-3.5 h-3.5" />
+              <Zap className="w-3.5 h-3.5 text-white" />
               <span>Regen</span>
             </button>
           </div>
@@ -217,13 +217,13 @@ export const LiveBmsSimulator: React.FC = () => {
         </div>
 
         {/* Tab Selection */}
-        <div className="flex border-b border-white/[0.06] bg-[#0a0a0a] px-4 sm:px-6 overflow-x-auto">
+        <div className="flex border-b border-white/10 bg-zinc-950 px-4 sm:px-6 overflow-x-auto">
           <button
             onClick={() => setActiveTab('matrix')}
             className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors shrink-0 ${
               activeTab === 'matrix' 
-                ? 'border-cyan-400 text-cyan-300' 
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-white text-white' 
+                : 'border-transparent text-zinc-500 hover:text-zinc-300'
             }`}
           >
             [01] 8S CELL VOLTAGE MATRIX
@@ -232,8 +232,8 @@ export const LiveBmsSimulator: React.FC = () => {
             onClick={() => setActiveTab('canbus')}
             className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors shrink-0 ${
               activeTab === 'canbus' 
-                ? 'border-emerald-400 text-emerald-300' 
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                ? 'border-white text-white' 
+                : 'border-transparent text-zinc-500 hover:text-zinc-300'
             }`}
           >
             [02] CAN 2.0B TELEMETRY STREAM
@@ -243,7 +243,7 @@ export const LiveBmsSimulator: React.FC = () => {
             className={`py-3 px-4 text-xs font-mono border-b font-semibold transition-colors shrink-0 ${
               activeTab === 'hardware' 
                 ? 'border-white text-white' 
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                : 'border-transparent text-zinc-500 hover:text-zinc-300'
             }`}
           >
             [03] BESS STORAGE TEST RIG
@@ -252,7 +252,7 @@ export const LiveBmsSimulator: React.FC = () => {
 
         {/* Tab 1: 8S Cell Matrix Display */}
         {activeTab === 'matrix' && (
-          <div className="p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3 bg-[#050505]">
+          <div className="p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3 bg-black">
             {cells.map((cell) => {
               const voltPct = ((cell.voltage - 3.0) / (4.2 - 3.0)) * 100;
               const isCellImbalanced = cell.id === 4 && injectFault;
@@ -260,41 +260,41 @@ export const LiveBmsSimulator: React.FC = () => {
               return (
                 <div 
                   key={cell.id}
-                  className={`p-3 rounded-xl border flex flex-col justify-between transition-all ${
+                  className={`p-3 rounded-lg border flex flex-col justify-between transition-all ${
                     isCellImbalanced 
-                      ? 'bg-amber-950/20 border-amber-500/50' 
+                      ? 'bg-zinc-900 border-white' 
                       : cell.balancing 
-                      ? 'bg-cyan-950/20 border-cyan-500/40' 
-                      : 'bg-[#0a0a0a] border-white/[0.06]'
+                      ? 'bg-zinc-900/60 border-white/40' 
+                      : 'bg-zinc-950 border-white/10'
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[9px] font-mono text-slate-500 mb-2">
-                    <span className="font-bold text-slate-300">C{cell.id.toString().padStart(2, '0')}</span>
+                  <div className="flex items-center justify-between text-[9px] font-mono text-zinc-500 mb-2">
+                    <span className="font-bold text-zinc-300">C{cell.id.toString().padStart(2, '0')}</span>
                     {cell.balancing ? (
-                      <span className="text-cyan-400 flex items-center gap-0.5 animate-pulse">
+                      <span className="text-white font-bold flex items-center gap-0.5 animate-pulse">
                         <Activity className="w-2.5 h-2.5" /> BAL
                       </span>
                     ) : (
-                      <span className="text-emerald-400">OK</span>
+                      <span className="text-zinc-400">OK</span>
                     )}
                   </div>
 
-                  <div className="w-full h-14 bg-[#050505] rounded p-0.5 flex flex-col justify-end my-2 border border-white/5">
+                  <div className="w-full h-14 bg-black rounded p-0.5 flex flex-col justify-end my-2 border border-white/5">
                     <div 
                       className={`w-full rounded-sm transition-all duration-500 ${
                         isCellImbalanced 
-                          ? 'bg-amber-400' 
-                          : 'bg-cyan-400'
+                          ? 'bg-white' 
+                          : 'bg-zinc-400'
                       }`}
                       style={{ height: `${Math.max(10, Math.min(100, voltPct))}%` }}
                     />
                   </div>
 
                   <div className="text-center font-mono">
-                    <span className={`text-xs font-bold ${isCellImbalanced ? 'text-amber-300' : 'text-slate-100'}`}>
+                    <span className={`text-xs font-bold ${isCellImbalanced ? 'text-white' : 'text-zinc-200'}`}>
                       {cell.voltage.toFixed(3)}V
                     </span>
-                    <span className="block text-[9px] text-slate-500 mt-0.5">
+                    <span className="block text-[9px] text-zinc-500 mt-0.5">
                       {cell.temp.toFixed(1)}°C
                     </span>
                   </div>
@@ -306,10 +306,10 @@ export const LiveBmsSimulator: React.FC = () => {
 
         {/* Tab 2: CAN-Bus Raw Stream */}
         {activeTab === 'canbus' && (
-          <div className="p-4 sm:p-6 font-mono text-xs bg-[#050505] space-y-1.5 text-slate-300">
+          <div className="p-4 sm:p-6 font-mono text-xs bg-black space-y-1.5 text-zinc-300">
             {canLogs.map((log, idx) => (
-              <div key={idx} className="p-2.5 rounded bg-[#0a0a0a] border border-white/[0.06] text-slate-300 flex items-center gap-2">
-                <span className="text-cyan-400 font-bold">{`>`}</span>
+              <div key={idx} className="p-2.5 rounded bg-zinc-950 border border-white/10 text-zinc-300 flex items-center gap-2">
+                <span className="text-white font-bold">{`>`}</span>
                 <span>{log}</span>
               </div>
             ))}
@@ -318,38 +318,38 @@ export const LiveBmsSimulator: React.FC = () => {
 
         {/* Tab 3: BESS Storage Test Rig (Hardware Visual) */}
         {activeTab === 'hardware' && (
-          <div className="p-4 sm:p-6 bg-[#050505] grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            <div className="md:col-span-7 rounded-xl overflow-hidden border border-white/10 relative h-[260px] sm:h-[320px]">
+          <div className="p-4 sm:p-6 bg-black grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <div className="md:col-span-7 rounded-xl overflow-hidden border border-white/15 relative h-[260px] sm:h-[320px]">
               <img 
-                src="./assets/bms-hardware-testbench.jpg" 
+                src="./assets/hero-bess-facility.jpg" 
                 alt="Industrial BESS Lithium Energy Storage Rack & Telemetry Rig" 
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-center filter grayscale contrast-125"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-3 left-3 text-[10px] font-mono text-emerald-400 bg-black/80 px-2.5 py-1 rounded border border-emerald-500/30">
+              <div className="absolute bottom-3 left-3 text-[10px] font-mono text-white bg-black/90 px-2.5 py-1 rounded border border-white/20">
                 LITHIUM BESS RACK 75kW/120kWh
               </div>
             </div>
 
             <div className="md:col-span-5 space-y-3 font-mono text-xs">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
-                <Layers className="w-4 h-4 text-cyan-400" />
+                <Layers className="w-4 h-4 text-white" />
                 <span>Stationary ESS & EV Pack Architecture</span>
               </div>
-              <p className="text-slate-400 text-xs font-normal leading-relaxed font-body">
+              <p className="text-zinc-400 text-xs font-normal leading-relaxed font-body">
                 Compatible with standard rack-mount stationary storage systems, heavy commercial truck chassis, and 2W/3W swappable battery formats.
               </p>
-              <div className="space-y-1.5 pt-2 text-[11px] text-slate-300">
+              <div className="space-y-1.5 pt-2 text-[11px] text-zinc-300">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                   <span>High-current copper busbar topology</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                   <span>Opto-isolated contactor driver stage</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                   <span>Redundant emergency safety interlock</span>
                 </div>
               </div>
