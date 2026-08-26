@@ -10,7 +10,7 @@ import { Footer } from './components/Footer';
 
 export const App: React.FC = () => {
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-x-hidden selection:bg-white selection:text-black font-body">
+    <div className="relative min-h-screen bg-black text-white overflow-x-clip selection:bg-white selection:text-black font-body">
       
       {/* Prime Intellect Fixed Navigation Header */}
       <Navbar />

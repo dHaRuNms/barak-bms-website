@@ -23,7 +23,7 @@
   body {
     background-color: #000000;
     color: #f4f4f5;
-    overflow-x: hidden;
+    overflow-x: clip;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
