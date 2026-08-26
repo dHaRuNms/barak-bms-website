@@ -6,8 +6,7 @@ import {
   Code2, 
   Layers, 
   Bot, 
-  Zap,
-  CheckCircle2
+  Zap
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -32,7 +31,7 @@ export const ExplodedStack: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Set initial states
+      // Initial states
       gsap.set(state1MediaRef.current, { opacity: 1, scale: 1, filter: 'blur(0px)' });
       gsap.set(state2MediaRef.current, { opacity: 0, scale: 0.96, filter: 'blur(8px)' });
       gsap.set(state3MediaRef.current, { opacity: 0, scale: 0.96, filter: 'blur(8px)' });
@@ -142,7 +141,7 @@ export const ExplodedStack: React.FC = () => {
       {/* 100vh Sticky Viewport Container */}
       <div 
         ref={stickyRef} 
-        className="sticky top-0 h-screen w-full flex flex-col justify-between p-4 sm:p-8 md:p-12 overflow-hidden bg-black"
+        className="sticky top-0 h-screen w-full flex flex-col justify-between p-4 sm:p-8 md:p-12 overflow-hidden bg-black border-b border-white/10"
       >
         {/* Top Telemetry & Scrub Header (Prime Intellect FIG format) */}
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between z-20 pb-4 border-b border-white/10">
@@ -156,7 +155,7 @@ export const ExplodedStack: React.FC = () => {
               </span>
               <span 
                 ref={activeStateLabelRef}
-                className="text-xs font-mono font-bold text-white tracking-wider"
+                className="text-xs font-mono font-medium text-white tracking-wider"
               >
                 FIG. 1 // STATE 01: HARDWARE BMS ARCHITECTURE
               </span>
@@ -213,7 +212,7 @@ export const ExplodedStack: React.FC = () => {
                   <Cpu className="w-4 h-4 text-white" />
                   <span>Dual Isolation & Active Cell Balancing Core</span>
                 </div>
-                <span className="text-white font-bold">±1.0mV Precision</span>
+                <span className="text-white font-medium">±1.0mV Precision</span>
               </div>
             </div>
 
@@ -244,7 +243,7 @@ export const ExplodedStack: React.FC = () => {
                   <Code2 className="w-4 h-4 text-white" />
                   <span>Open-Source KiCad EDA & Virtual Impedance</span>
                 </div>
-                <span className="text-white font-bold">144V / 87% SOC</span>
+                <span className="text-white font-medium">144V / 87% SOC</span>
               </div>
             </div>
 
@@ -275,7 +274,7 @@ export const ExplodedStack: React.FC = () => {
                   <Bot className="w-4 h-4 text-white" />
                   <span>Clara AI Diagnostics & Real-Time EV Dispatch</span>
                 </div>
-                <span className="text-white font-bold">12,482 Nodes</span>
+                <span className="text-white font-medium">12,482 Nodes</span>
               </div>
             </div>
 
@@ -292,31 +291,31 @@ export const ExplodedStack: React.FC = () => {
               className="absolute inset-0 flex flex-col justify-center space-y-4 will-change-transform"
             >
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-black bg-white px-2.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                <span className="text-[10px] font-mono text-black bg-white px-2 py-0.5 rounded font-medium uppercase tracking-wider">
                   SPEC_01 // HARDWARE
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500">1.1 · ARCHITECTURE</span>
               </div>
 
-              <h3 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-tight leading-tight">
-                Next-Generation BMS Hardware
+              <h3 className="text-3xl sm:text-5xl font-sans font-light text-white tracking-[-0.03em] leading-tight">
+                Next-Gen BMS Hardware
               </h3>
 
-              <p className="text-sm text-zinc-300 leading-relaxed font-body">
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
                 Engineered for automotive-grade reliability under extreme thermal and vibration profiles. Combines high-voltage galvanic isolation with sub-15µs hardware trip execution.
               </p>
 
-              <div className="space-y-2 pt-2 text-xs font-mono">
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+              <div className="space-y-2.5 pt-2 text-xs font-mono">
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">1.1</span>
                   <span>±1.0mV ADC precision with active cell balance topology</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">1.2</span>
                   <span>Dual redundant contactor isolation & micro-impedance tracking</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">1.3</span>
                   <span>Sub-15µs hardware overcurrent and thermal runaway interrupt</span>
                 </div>
               </div>
@@ -328,31 +327,31 @@ export const ExplodedStack: React.FC = () => {
               className="absolute inset-0 flex flex-col justify-center space-y-4 will-change-transform"
             >
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-black bg-white px-2.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                <span className="text-[10px] font-mono text-black bg-white px-2 py-0.5 rounded font-medium uppercase tracking-wider">
                   SPEC_02 // SOFTWARE & SIM
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500">2.1 · DIGITAL TWIN</span>
               </div>
 
-              <h3 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-tight leading-tight">
-                Open EDA & Electrochemical Twin
+              <h3 className="text-3xl sm:text-5xl font-sans font-light text-white tracking-[-0.03em] leading-tight">
+                Open EDA & Virtual Twin
               </h3>
 
-              <p className="text-sm text-zinc-300 leading-relaxed font-body">
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
                 Zero vendor lock-in. We empower hardware engineering teams with open-source PCB schematic tooling and high-precision virtual battery simulation.
               </p>
 
-              <div className="space-y-2 pt-2 text-xs font-mono">
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+              <div className="space-y-2.5 pt-2 text-xs font-mono">
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">2.1</span>
                   <span>Open KiCad schematic modules & verified BOM libraries</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">2.2</span>
                   <span>Real-time Hardware-In-The-Loop (HIL) electrochemical twin</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">2.3</span>
                   <span>Pre-silicon fault injection and aging degradation forecasting</span>
                 </div>
               </div>
@@ -364,31 +363,31 @@ export const ExplodedStack: React.FC = () => {
               className="absolute inset-0 flex flex-col justify-center space-y-4 will-change-transform"
             >
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-black bg-white px-2.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                <span className="text-[10px] font-mono text-black bg-white px-2 py-0.5 rounded font-medium uppercase tracking-wider">
                   SPEC_03 // FLEET & AI
                 </span>
                 <span className="text-[10px] font-mono text-zinc-500">3.1 · INTELLIGENCE</span>
               </div>
 
-              <h3 className="text-2xl sm:text-4xl font-sans font-bold text-white tracking-tight leading-tight">
-                Clara AI & Mobility Dispatch
+              <h3 className="text-3xl sm:text-5xl font-sans font-light text-white tracking-[-0.03em] leading-tight">
+                Clara AI & Fleet Transit
               </h3>
 
-              <p className="text-sm text-zinc-300 leading-relaxed font-body">
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
                 AI technical copilot that interprets raw CAN 2.0B frames and live telemetry to predict pack degradation, combined with turn-key ride-hailing dispatch for EV fleets.
               </p>
 
-              <div className="space-y-2 pt-2 text-xs font-mono">
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+              <div className="space-y-2.5 pt-2 text-xs font-mono">
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">3.1</span>
                   <span>Clara Bot real-time diagnostic anomaly detection copilot</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">3.2</span>
                   <span>Sub-150ms passenger matching with live battery health routing</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-zinc-300">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                <div className="flex items-start gap-2.5 text-zinc-300">
+                  <span className="text-zinc-600 font-bold">3.3</span>
                   <span>Automated driver OTP verification & zero-commission architecture</span>
                 </div>
               </div>
@@ -405,9 +404,9 @@ export const ExplodedStack: React.FC = () => {
             <span>// SCROLL TO PHYSICALLY ASSEMBLE ARCHITECTURE</span>
           </span>
           <div className="flex gap-4">
-            <span className={activeStep === 1 ? 'text-white font-bold' : ''}>[01 HARDWARE]</span>
-            <span className={activeStep === 2 ? 'text-white font-bold' : ''}>[02 SOFTWARE]</span>
-            <span className={activeStep === 3 ? 'text-white font-bold' : ''}>[03 FLEET]</span>
+            <span className={activeStep === 1 ? 'text-white font-medium' : ''}>[01 HARDWARE]</span>
+            <span className={activeStep === 2 ? 'text-white font-medium' : ''}>[02 SOFTWARE]</span>
+            <span className={activeStep === 3 ? 'text-white font-medium' : ''}>[03 FLEET]</span>
           </div>
         </div>
 

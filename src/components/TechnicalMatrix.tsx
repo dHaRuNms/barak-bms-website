@@ -77,10 +77,10 @@ export const TechnicalMatrix: React.FC = () => {
           <Zap className="w-3.5 h-3.5 text-white" />
           <span>// WHY CHOOSE BARAK MICROELECTRONICS</span>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-sans font-bold tracking-[-0.03em] text-white leading-tight">
-          Engineering Differentiators
+        <h2 className="text-4xl sm:text-6xl font-sans font-light tracking-[-0.04em] text-white leading-tight">
+          Engineering Differentiators.
         </h2>
-        <p className="text-zinc-400 text-sm sm:text-base font-normal leading-relaxed font-body">
+        <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed font-body">
           Engineered for mission-critical reliability with absolute transparency, robust open standards, and unified digital intelligence.
         </p>
       </div>
@@ -119,10 +119,10 @@ export const TechnicalMatrix: React.FC = () => {
                 </div>
 
                 {/* Title & Copy */}
-                <h3 className="text-xl sm:text-2xl font-sans font-bold text-white mb-3 tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-sans font-normal text-white mb-3 tracking-tight">
                   {item.title}
                 </h3>
-                <p className="text-sm text-zinc-300 leading-relaxed font-body">
+                <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
                   {item.description}
                 </p>
               </div>

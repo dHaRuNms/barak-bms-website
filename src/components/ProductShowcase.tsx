@@ -1,447 +1,375 @@
 import React, { useState } from 'react';
 import { 
   Bot, 
-  Code2, 
-  Binary, 
+  Terminal, 
+  Cpu, 
   Car, 
   Send, 
-  CheckCircle2, 
-  Terminal
+  FileCode, 
+  Download, 
+  Activity, 
+  Navigation,
+  MapPin,
+  CheckCircle2
 } from 'lucide-react';
 
-interface ChatMessage {
-  sender: 'user' | 'clara';
-  text: string;
-  codeSnippet?: string;
-}
-
 export const ProductShowcase: React.FC = () => {
-  const [activeProductTab, setActiveProductTab] = useState<'clara' | 'eda' | 'emulator' | 'fleet'>('clara');
+  const [activeTab, setActiveTab] = useState<'clara' | 'eda' | 'twin' | 'fleet'>('clara');
 
-  // Clara Bot Interactive Demo State
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      sender: 'clara',
-      text: "Hello, I am Clara Bot. I'm connected to your Barak BMS hardware and telemetry stream. How can I assist with diagnostics or fleet telemetry today?"
-    }
+  // Clara AI state
+  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'clara'; text: string }>>([
+    { sender: 'clara', text: 'Hello Engineer. Clara BMS Telemetry Copilot online. How can I assist with your pack diagnostics today?' },
+    { sender: 'user', text: 'Cell #3 voltage dropped by 24mV during 3C discharge. Is this thermal or dendrite degradation?' },
+    { sender: 'clara', text: 'Telemetry indicates internal DC resistance (DCR) on Cell 3 increased by 4.2mΩ over 120 cycles. This matches micro-dendrite formation risk. Recommendation: Trigger low-current pulse rejuvenation and set max discharge to 1.8C.' }
   ]);
-  const [inputPrompt, setInputPrompt] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [inputMessage, setInputMessage] = useState('');
 
-  const samplePrompts = [
-    "Diagnose Cell #4 voltage delta anomaly (42mV)",
-    "Generate HIL test profile for 3C fast charge",
-    "Show VCU CAN bus baud rate configuration",
-    "Fleet battery health summary across Chennai depot"
-  ];
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputMessage.trim()) return;
 
-  const handleSendPrompt = (query: string) => {
-    if (!query.trim()) return;
-
-    const userMsg: ChatMessage = { sender: 'user', text: query };
-    setMessages(prev => [...prev, userMsg]);
-    setInputPrompt('');
-    setIsTyping(true);
+    const userText = inputMessage;
+    setChatMessages(prev => [...prev, { sender: 'user', text: userText }]);
+    setInputMessage('');
 
     setTimeout(() => {
-      let response: ChatMessage;
-
-      if (query.toLowerCase().includes('cell #4') || query.toLowerCase().includes('delta')) {
-        response = {
-          sender: 'clara',
-          text: "Cell #4 voltage currently at 3.882V vs 3.840V pack mean (+42mV delta). Root cause: Internal resistance disparity during recent high-discharge burst. Active balancing switch #4 actuated with 120mA bleed current. Projected balance convergence: 4.2 minutes.",
-          codeSnippet: "STATUS: BALANCING_ACTIVE // PWM: 78% // ESTIMATED_RECOVERY: 252s"
-        };
-      } else if (query.toLowerCase().includes('hil') || query.toLowerCase().includes('charge')) {
-        response = {
-          sender: 'clara',
-          text: "Virtual Battery Emulator initialized in Hardware-In-The-Loop mode. Applying CC-CV 3.0C curve with ambient 35°C thermal injection. Pre-charge contactor timing validated.",
-          codeSnippet: "EMULATOR_PROFILE: 3.0C_STEP // PEAK_THERMAL: 42.1°C // SAFETY_MARGIN: +12.9°C"
-        };
-      } else if (query.toLowerCase().includes('can') || query.toLowerCase().includes('vcu')) {
-        response = {
-          sender: 'clara',
-          text: "VCU Communication Protocol: CAN 2.0B standard identifier 0x18F00101. Bitrate 500 kbps. Termination resistor 120Ω confirmed online.",
-          codeSnippet: "CAN_CFG: BAUD=500k // ID_MASK=0x18F0XXXX // STATUS=ACK_VALID"
-        };
-      } else {
-        response = {
-          sender: 'clara',
-          text: "Telematics telemetry polled for active EV fleet: 48 units reporting. Mean Pack SOH: 98.4%. Zero critical thermal faults in past 24 hours.",
-          codeSnippet: "DEPOT: CHENNAI_CENTRAL // FLEET_ONLINE: 48/48 // CRITICAL_FAULTS: 0"
-        };
-      }
-
-      setMessages(prev => [...prev, response]);
-      setIsTyping(false);
-    }, 700);
+      setChatMessages(prev => [
+        ...prev, 
+        { 
+          sender: 'clara', 
+          text: `Analysis complete for: "${userText}". Battery state is within safety envelope (SOC 84.2%, Max Temp 31.4°C). No ASIL-D critical faults detected.` 
+        }
+      ]);
+    }, 600);
   };
 
   return (
-    <section id="ecosystem" className="py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 bg-black">
+    <section id="ecosystem" className="py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 bg-black border-b border-white/10">
       
-      {/* Section Header (Prime Intellect FIG Style) */}
-      <div className="max-w-3xl mb-14 space-y-3">
+      {/* Section Header (Architectural light-weight typography) */}
+      <div className="space-y-4 mb-16">
         <div className="flex items-center gap-2 text-[10px] font-mono tracking-[0.25em] text-zinc-500 uppercase">
           <Terminal className="w-3.5 h-3.5 text-white" />
-          <span>// SOFTWARE PLATFORMS & CLOUD ECOSYSTEM</span>
+          <span>[02] // SOFTWARE ECOSYSTEM & TOOLING</span>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-sans font-bold text-white tracking-[-0.03em] leading-tight">
-          Unified Digital Intelligence
+        <h2 className="text-4xl sm:text-6xl font-sans font-light tracking-[-0.04em] text-white leading-tight">
+          Integrated Hardware & Software Stack.
         </h2>
-        <p className="text-zinc-400 text-sm sm:text-base font-normal leading-relaxed font-body">
-          From AI-driven diagnostics to open EDA PCB utilities and electrochemical simulation, explore the modular software layers powering modern battery systems.
+        <p className="text-sm sm:text-base text-zinc-400 max-w-2xl font-light font-body">
+          Barak Microelectronics unites low-level embedded firmware with generative diagnostics, open hardware design libraries, and multi-tenant commercial mobility platforms.
         </p>
       </div>
 
-      {/* Product Selector Navigation Tabs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-        
+      {/* Segmented Tab Controls (Prime Intellect Style) */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-zinc-950 border border-white/15 mb-8">
         <button
-          onClick={() => setActiveProductTab('clara')}
-          className={`p-4 rounded-xl border text-left transition-all duration-200 flex items-center gap-3 ${
-            activeProductTab === 'clara'
-              ? 'bg-zinc-900 border-white text-white shadow-xl'
-              : 'bg-zinc-950 border-white/10 text-zinc-400 hover:text-white hover:border-white/25'
+          onClick={() => setActiveTab('clara')}
+          className={`flex-1 min-w-[160px] py-2.5 px-4 rounded-lg font-mono text-xs transition-all flex items-center justify-center gap-2 ${
+            activeTab === 'clara'
+              ? 'bg-white text-black font-semibold shadow-lg'
+              : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
           }`}
         >
-          <div className={`p-2.5 rounded-lg border ${activeProductTab === 'clara' ? 'bg-white text-black border-white' : 'bg-black border-white/10 text-zinc-400'}`}>
-            <Bot className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-[10px] font-mono text-zinc-500 uppercase">FIG. 01</div>
-            <div className="text-sm font-sans font-bold text-white">Clara AI Copilot</div>
-          </div>
+          <Bot className="w-4 h-4" />
+          <span>CLARA AI COPILOT</span>
+          <span className="text-[10px] opacity-60">01</span>
         </button>
 
         <button
-          onClick={() => setActiveProductTab('eda')}
-          className={`p-4 rounded-xl border text-left transition-all duration-200 flex items-center gap-3 ${
-            activeProductTab === 'eda'
-              ? 'bg-zinc-900 border-white text-white shadow-xl'
-              : 'bg-zinc-950 border-white/10 text-zinc-400 hover:text-white hover:border-white/25'
+          onClick={() => setActiveTab('eda')}
+          className={`flex-1 min-w-[160px] py-2.5 px-4 rounded-lg font-mono text-xs transition-all flex items-center justify-center gap-2 ${
+            activeTab === 'eda'
+              ? 'bg-white text-black font-semibold shadow-lg'
+              : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
           }`}
         >
-          <div className={`p-2.5 rounded-lg border ${activeProductTab === 'eda' ? 'bg-white text-black border-white' : 'bg-black border-white/10 text-zinc-400'}`}>
-            <Code2 className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-[10px] font-mono text-zinc-500 uppercase">FIG. 02</div>
-            <div className="text-sm font-sans font-bold text-white">Open EDA Suite</div>
-          </div>
+          <Cpu className="w-4 h-4" />
+          <span>OPEN-SOURCE EDA</span>
+          <span className="text-[10px] opacity-60">02</span>
         </button>
 
         <button
-          onClick={() => setActiveProductTab('emulator')}
-          className={`p-4 rounded-xl border text-left transition-all duration-200 flex items-center gap-3 ${
-            activeProductTab === 'emulator'
-              ? 'bg-zinc-900 border-white text-white shadow-xl'
-              : 'bg-zinc-950 border-white/10 text-zinc-400 hover:text-white hover:border-white/25'
+          onClick={() => setActiveTab('twin')}
+          className={`flex-1 min-w-[160px] py-2.5 px-4 rounded-lg font-mono text-xs transition-all flex items-center justify-center gap-2 ${
+            activeTab === 'twin'
+              ? 'bg-white text-black font-semibold shadow-lg'
+              : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
           }`}
         >
-          <div className={`p-2.5 rounded-lg border ${activeProductTab === 'emulator' ? 'bg-white text-black border-white' : 'bg-black border-white/10 text-zinc-400'}`}>
-            <Binary className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-[10px] font-mono text-zinc-500 uppercase">FIG. 03</div>
-            <div className="text-sm font-sans font-bold text-white">Digital Twin</div>
-          </div>
+          <Activity className="w-4 h-4" />
+          <span>BATTERY DIGITAL TWIN</span>
+          <span className="text-[10px] opacity-60">03</span>
         </button>
 
         <button
-          onClick={() => setActiveProductTab('fleet')}
-          className={`p-4 rounded-xl border text-left transition-all duration-200 flex items-center gap-3 ${
-            activeProductTab === 'fleet'
-              ? 'bg-zinc-900 border-white text-white shadow-xl'
-              : 'bg-zinc-950 border-white/10 text-zinc-400 hover:text-white hover:border-white/25'
+          onClick={() => setActiveTab('fleet')}
+          className={`flex-1 min-w-[160px] py-2.5 px-4 rounded-lg font-mono text-xs transition-all flex items-center justify-center gap-2 ${
+            activeTab === 'fleet'
+              ? 'bg-white text-black font-semibold shadow-lg'
+              : 'text-zinc-400 hover:text-white hover:bg-white/[0.05]'
           }`}
         >
-          <div className={`p-2.5 rounded-lg border ${activeProductTab === 'fleet' ? 'bg-white text-black border-white' : 'bg-black border-white/10 text-zinc-400'}`}>
-            <Car className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-[10px] font-mono text-zinc-500 uppercase">FIG. 04</div>
-            <div className="text-sm font-sans font-bold text-white">Fleet Dispatch</div>
-          </div>
+          <Car className="w-4 h-4" />
+          <span>COMMERCIAL FLEET</span>
+          <span className="text-[10px] opacity-60">04</span>
         </button>
-
       </div>
 
-      {/* Main Tab Content Card */}
-      <div className="stark-panel rounded-xl p-6 sm:p-8 border border-white/15 energy-stream-border">
+      {/* Tab Panels */}
+      <div className="stark-panel rounded-xl border border-white/15 p-6 sm:p-8 bg-zinc-950/70 backdrop-blur-xl">
         
-        {/* PRODUCT 1: CLARA BOT AI */}
-        {activeProductTab === 'clara' && (
+        {/* TAB 1: CLARA AI COPILOT */}
+        {activeTab === 'clara' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-5 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded bg-white text-black font-mono text-xs font-bold">
-                  AI TECHNICAL & OPERATIONAL COPILOT
-                </span>
+              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <span>AI DIAGNOSTIC COPILOT</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Clara Bot: Intelligent Hardware Diagnostics
+              <h3 className="text-2xl sm:text-4xl font-sans font-light text-white tracking-tight">
+                Real-Time Telemetry Intelligence.
               </h3>
-              <p className="text-zinc-300 text-sm leading-relaxed font-body">
-                An intelligent assistant built to simplify hardware troubleshooting, diagnostic query handling, and operational workflows for engineers, field operators, and fleet maintenance teams.
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
+                Clara processes raw CAN 2.0B bus traffic, cell impedance spectra, and thermal gradients directly at the edge. It diagnoses anomalies before they escalate to critical runaway events.
               </p>
-
-              <div className="space-y-3 pt-2">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0 mt-1" />
-                  <div>
-                    <strong className="text-white text-xs block font-mono">Instant Diagnostic Guidance:</strong>
-                    <span className="text-zinc-400 text-xs">Rapidly interprets telemetry data, register faults, and pin voltage errors.</span>
-                  </div>
+              
+              <div className="space-y-2 pt-2 text-xs font-mono text-zinc-300">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  <span>Sub-second electrochemical anomaly detection</span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0 mt-1" />
-                  <div>
-                    <strong className="text-white text-xs block font-mono">Interactive Operations:</strong>
-                    <span className="text-zinc-400 text-xs">Simplifies onboarding and field troubleshooting with natural language interaction.</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  <span>Remaining Useful Life (RUL) predictive degradation curves</span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0 mt-1" />
-                  <div>
-                    <strong className="text-white text-xs block font-mono">Workflow Automation:</strong>
-                    <span className="text-zinc-400 text-xs">Integrates seamlessly into enterprise web and mobile management suites.</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  <span>Natural language query interface for hardware engineers</span>
                 </div>
               </div>
             </div>
 
-            {/* Clara Interactive Chat Window */}
-            <div className="lg:col-span-7 bg-black rounded-xl border border-white/15 overflow-hidden flex flex-col h-[460px] shadow-2xl">
-              <div className="bg-zinc-950 px-4 py-3 border-b border-white/10 flex items-center justify-between">
+            {/* Clara Chat Simulator */}
+            <div className="lg:col-span-7 bg-black rounded-lg border border-white/15 overflow-hidden flex flex-col h-[380px]">
+              <div className="px-4 py-2.5 bg-zinc-950 border-b border-white/10 flex items-center justify-between text-xs font-mono text-zinc-400">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  <span className="font-mono text-xs font-bold text-white">CLARA AI // HARDWARE COPILOT</span>
+                  <Bot className="w-4 h-4 text-white" />
+                  <span className="text-white font-medium">Clara Copilot v2.4</span>
                 </div>
-                <span className="text-[10px] font-mono text-zinc-400">LLM + TELEMETRY ACTIVE</span>
+                <span className="text-[10px] text-zinc-500">CAN_LOG_ID: #4092_EV</span>
               </div>
 
-              {/* Chat Message History */}
               <div className="flex-1 p-4 overflow-y-auto space-y-3 font-mono text-xs">
-                {messages.map((m, idx) => (
+                {chatMessages.map((msg, i) => (
                   <div 
-                    key={idx} 
-                    className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
+                    key={i} 
+                    className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div 
-                      className={`max-w-[85%] p-3.5 rounded-xl ${
-                        m.sender === 'user' 
-                          ? 'bg-zinc-900 border border-white/20 text-white' 
-                          : 'bg-zinc-950 border border-white/10 text-zinc-200'
+                      className={`max-w-[85%] p-3 rounded-lg ${
+                        msg.sender === 'user' 
+                          ? 'bg-zinc-800 text-white' 
+                          : 'bg-zinc-950 border border-white/10 text-zinc-300'
                       }`}
                     >
-                      <div className="text-[10px] text-zinc-500 mb-1">
-                        {m.sender === 'user' ? '// OPERATOR QUERY' : '// CLARA BOT RESPONSE'}
+                      <div className="text-[9px] uppercase tracking-wider text-zinc-500 mb-1">
+                        {msg.sender === 'user' ? 'Hardware Engineer' : 'Clara Diagnostics'}
                       </div>
-                      <p className="leading-relaxed">{m.text}</p>
-                      {m.codeSnippet && (
-                        <div className="mt-2 p-2 rounded bg-black border border-white/10 text-[10px] text-zinc-300 font-mono">
-                          {m.codeSnippet}
-                        </div>
-                      )}
+                      {msg.text}
                     </div>
                   </div>
                 ))}
-                {isTyping && (
-                  <div className="flex items-center gap-1.5 text-zinc-400 font-mono text-xs pl-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-                    <span>Clara analyzing telemetry registers...</span>
-                  </div>
-                )}
               </div>
 
-              {/* Quick Sample Prompts */}
-              <div className="px-3 py-2 bg-zinc-950 border-t border-white/10 flex gap-2 overflow-x-auto">
-                {samplePrompts.map((p, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleSendPrompt(p)}
-                    className="whitespace-nowrap text-[10px] font-mono px-2.5 py-1 rounded bg-zinc-900 hover:bg-white hover:text-black border border-white/10 text-zinc-300 transition-colors"
-                  >
-                    + {p}
-                  </button>
-                ))}
-              </div>
-
-              {/* Chat Input Bar */}
-              <form 
-                onSubmit={(e) => { e.preventDefault(); handleSendPrompt(inputPrompt); }}
-                className="p-3 bg-black border-t border-white/10 flex gap-2"
-              >
+              <form onSubmit={handleSendMessage} className="p-3 bg-zinc-950 border-t border-white/10 flex gap-2">
                 <input 
-                  type="text"
-                  value={inputPrompt}
-                  onChange={(e) => setInputPrompt(e.target.value)}
-                  placeholder="Ask Clara regarding BMS faults, thermal alarms, or routing..."
-                  className="flex-1 bg-zinc-950 border border-white/15 rounded-lg px-4 py-2 text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-white"
+                  type="text" 
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  placeholder="Ask Clara about cell imbalance, thermal trip, or CAN frames..."
+                  className="flex-1 bg-black border border-white/15 rounded px-3 py-2 text-xs font-mono text-white placeholder-zinc-600 focus:outline-none focus:border-white/40"
                 />
-                <button
+                <button 
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-white text-black hover:bg-zinc-200 font-bold text-xs font-mono transition-colors flex items-center gap-1.5"
+                  className="px-4 py-2 bg-white text-black font-mono text-xs font-semibold rounded hover:bg-zinc-200 transition-colors flex items-center gap-1.5"
                 >
-                  <span>Send</span>
-                  <Send className="w-3.5 h-3.5" />
+                  <span>SEND</span>
+                  <Send className="w-3 h-3" />
                 </button>
               </form>
             </div>
           </div>
         )}
 
-        {/* PRODUCT 2: OPEN-SOURCE EDA */}
-        {activeProductTab === 'eda' && (
+        {/* TAB 2: OPEN-SOURCE EDA */}
+        {activeTab === 'eda' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <span className="px-2.5 py-0.5 rounded bg-white text-black font-mono text-xs font-bold">
-                OPEN-SOURCE HARDWARE SUITE
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Open-Source EDA & PCB Design Suite
+              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
+                <FileCode className="w-3.5 h-3.5 text-white" />
+                <span>OPEN HARDWARE REPOSITORIES</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-sans font-light text-white tracking-tight">
+                Democratizing Hardware Design.
               </h3>
-              <p className="text-zinc-300 text-sm leading-relaxed font-body">
-                Democratizing hardware development through robust, open-source Electronic Design Automation (EDA) and PCB layout utilities tailored for next-generation power electronics engineers.
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
+                We believe electrical vehicle safety is an open imperative. Access complete KiCad reference schematics, audited Bill-of-Materials (BOM), and 4-layer automotive PCB layouts without restrictive proprietary barriers.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3.5 rounded-lg bg-zinc-950 border border-white/10">
-                  <div className="text-xs font-mono text-white font-bold mb-1">Developer-Centric</div>
-                  <p className="text-xs text-zinc-400 font-body">Streamlines schematic capture, PCB layout DRC validation, and unified component footprint libraries.</p>
-                </div>
-                <div className="p-3.5 rounded-lg bg-zinc-950 border border-white/10">
-                  <div className="text-xs font-mono text-white font-bold mb-1">Rapid Prototyping</div>
-                  <p className="text-xs text-zinc-400 font-body">Accelerates hardware design iterations for electronics engineers, startups, and academic researchers.</p>
-                </div>
+              <div className="flex flex-wrap gap-3 pt-2">
+                <a 
+                  href="https://github.com/dHaRuNms" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded bg-white text-black font-mono text-xs font-semibold hover:bg-zinc-200 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>CLONE REPO ON GITHUB</span>
+                </a>
+                <span className="inline-flex items-center px-3 py-2 rounded bg-black border border-white/10 text-xs font-mono text-zinc-400">
+                  CERN-OHL-P-2.0 LICENSE
+                </span>
               </div>
             </div>
 
-            <div className="lg:col-span-6 bg-black p-6 rounded-xl border border-white/15 font-mono text-xs text-zinc-300 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                <span className="text-white font-bold">// BARAK_EDA_CORE CLI</span>
-                <span className="text-zinc-500">v1.4.0-STABLE</span>
+            <div className="lg:col-span-6 bg-black rounded-lg border border-white/15 p-4 font-mono text-xs space-y-3">
+              <div className="text-[10px] text-zinc-500 flex justify-between border-b border-white/10 pb-2">
+                <span>TERMINAL // EDA PACKAGE CLONE</span>
+                <span>BOM_REV_2.1</span>
               </div>
-              <div className="space-y-1.5 text-[11px]">
-                <p className="text-zinc-400">$ barak-eda import-schematic --netlist=bms_8s_revC.kicad_sch</p>
-                <p className="text-white">✓ DRC Check Passed: 0 Violations, 12 High-Current Net Isolations Validated.</p>
-                <p className="text-zinc-400">$ barak-eda export-gerber --layer-stack=4-layer-FR4-2oz</p>
-                <p className="text-zinc-300">✓ 4-Layer IPC-2221 Compliance Confirmed.</p>
-              </div>
-              <div className="p-3 rounded bg-zinc-950 border border-white/10 text-zinc-300 text-xs">
-                <strong>Community Freedom:</strong> Zero proprietary lock-in. Full KiCad, Gerber, and STEP 3D CAD compatibility.
-              </div>
+              <pre className="text-zinc-300 leading-relaxed overflow-x-auto">
+{`$ git clone https://github.com/barak-micro/open-bms-eda.git
+$ cd open-bms-eda && ./verify-pcb-drc.sh
+
+[✓] 16S Active Balance Topology Verified
+[✓] Isolation Barrier: 1500V Galvanic Cleared
+[✓] Texas Instruments BQ76952 Symbol Linked
+[✓] JLCPCB / PCBWay SMT BOM Pre-Mapped`}
+              </pre>
             </div>
           </div>
         )}
 
-        {/* PRODUCT 3: BATTERY EMULATOR & DIGITAL TWIN */}
-        {activeProductTab === 'emulator' && (
+        {/* TAB 3: BATTERY DIGITAL TWIN */}
+        {activeTab === 'twin' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <span className="px-2.5 py-0.5 rounded bg-white text-black font-mono text-xs font-bold">
-                DIGITAL TWIN & HARDWARE-IN-THE-LOOP
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Battery Emulator & Digital Twin
+              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
+                <Activity className="w-3.5 h-3.5 text-white" />
+                <span>ELECTROCHEMICAL TWIN</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-sans font-light text-white tracking-tight">
+                Simulate Thousands of Cycles in Minutes.
               </h3>
-              <p className="text-zinc-300 text-sm leading-relaxed font-body">
-                A high-fidelity digital twin simulation suite that allows engineers to model, simulate, and stress-test battery packs dynamically under real-world conditions prior to physical pack manufacturing.
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
+                Model cell-level degradation, thermal runaway propagation, and resistance growth without destroying physical battery packs. Our physics-based electrochemical model runs in browser or HIL racks.
               </p>
 
-              <div className="space-y-2 pt-2 text-xs font-mono">
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-white" />
-                  <span className="text-zinc-200"><strong>Virtual Cell Emulation:</strong> Dynamic charge/discharge profiles & degradation modes.</span>
+              <div className="grid grid-cols-3 gap-3 pt-2 text-left font-mono">
+                <div className="p-3 rounded bg-black border border-white/10">
+                  <div className="text-lg font-medium text-white">0.02%</div>
+                  <div className="text-[9px] text-zinc-500 uppercase">SOC Error Margin</div>
                 </div>
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-white" />
-                  <span className="text-zinc-200"><strong>HIL Integration:</strong> Validates firmware control algorithms with zero fire risk.</span>
+                <div className="p-3 rounded bg-black border border-white/10">
+                  <div className="text-lg font-medium text-white">100Hz</div>
+                  <div className="text-[9px] text-zinc-500 uppercase">HIL Refresh Rate</div>
                 </div>
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10 flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-white" />
-                  <span className="text-zinc-200"><strong>Accelerated Testing:</strong> Cuts physical testing cycles by up to 70%.</span>
+                <div className="p-3 rounded bg-black border border-white/10">
+                  <div className="text-lg font-medium text-white">3D</div>
+                  <div className="text-[9px] text-zinc-500 uppercase">Thermal Gradient</div>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-6 bg-black p-6 rounded-xl border border-white/15">
-              <div className="flex justify-between items-center pb-3 border-b border-white/10 text-xs font-mono text-white">
-                <span>SIMULATION PROFILE // DEGRADATION TWIN</span>
-                <span className="text-zinc-400">10,000 CYCLES MONTE CARLO</span>
+            <div className="lg:col-span-6 bg-black rounded-lg border border-white/15 p-4 space-y-3 font-mono">
+              <div className="flex justify-between text-[10px] text-zinc-500 border-b border-white/10 pb-2">
+                <span>SIMULATION OUTPUT // CELL DEGRADATION</span>
+                <span className="text-white">RUNNING_PASS_4</span>
               </div>
-              <div className="py-6 flex flex-col items-center justify-center">
-                <div className="w-full h-32 flex items-end gap-1.5 px-2">
-                  {[99, 98, 97.5, 96.8, 95.4, 94.2, 93.1, 92.5, 91.8, 90.4, 89.2, 88.5, 87.1, 85.9, 84.8].map((val, i) => (
-                    <div key={i} className="flex-1 flex flex-col items-center gap-1 group">
-                      <div 
-                        className="w-full rounded-t bg-zinc-400 hover:bg-white transition-all"
-                        style={{ height: `${(val - 70) * 3.3}%` }}
-                      />
-                      <span className="text-[9px] font-mono text-zinc-500">{i * 200}c</span>
+              
+              <div className="h-40 flex items-end gap-2 px-2 pt-4">
+                {[80, 78, 76, 75, 73, 72, 70, 68, 67, 65, 63, 62, 60, 58, 55, 52].map((val, idx) => (
+                  <div key={idx} className="flex-1 bg-zinc-800 hover:bg-white transition-colors rounded-t relative group" style={{ height: `${val}%` }}>
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-black text-[9px] px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      {val}%
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-              <div className="text-[11px] font-mono text-zinc-400 text-center">
-                Electrochemical Capacity Retention vs. Fast-Charge Cycle Count
+              <div className="flex justify-between text-[10px] text-zinc-500 pt-1">
+                <span>Cycle 0</span>
+                <span>Electrochemical Life Curve</span>
+                <span>Cycle 3,000</span>
               </div>
             </div>
           </div>
         )}
 
-        {/* PRODUCT 4: RIDE-HAILING & FLEET MANAGEMENT */}
-        {activeProductTab === 'fleet' && (
+        {/* TAB 4: COMMERCIAL FLEET */}
+        {activeTab === 'fleet' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <span className="px-2.5 py-0.5 rounded bg-white text-black font-mono text-xs font-bold">
-                URBAN ELECTRIC TRANSIT SUITE
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-sans font-bold text-white tracking-tight">
-                Commercial Ride-Hailing & Fleet App
+              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase">
+                <Car className="w-3.5 h-3.5 text-white" />
+                <span>TRANSIT & MOBILITY OS</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-sans font-light text-white tracking-tight">
+                Turn-Key EV Fleet Dispatch.
               </h3>
-              <p className="text-zinc-300 text-sm leading-relaxed font-body">
-                A scalable, real-time mobility and fleet telematics platform tailored for modern electric urban transit networks, 2W/3W auto-rickshaw fleets, and commercial EV logistics.
+              <p className="text-sm text-zinc-400 leading-relaxed font-body font-light">
+                Enterprise fleet orchestration engineered for commercial EV 2-wheelers, 3-wheelers, and electric bus networks. Integrates live battery health into dynamic routing and driver dispatch.
               </p>
 
-              <div className="space-y-3 pt-2 text-xs">
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10">
-                  <div className="text-xs font-mono text-white font-bold mb-1">Real-Time Dispatch & Routing</div>
-                  <span className="text-zinc-300 font-body">Sub-second rider-driver matching with high-accuracy location tracking and low-latency route calculation.</span>
+              <div className="space-y-2 text-xs font-mono text-zinc-300">
+                <div className="flex items-center gap-2">
+                  <Navigation className="w-3.5 h-3.5 text-white" />
+                  <span>Sub-150ms passenger-to-driver dispatch matching</span>
                 </div>
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10">
-                  <div className="text-xs font-mono text-white font-bold mb-1">BMS Telemetry Integration</div>
-                  <span className="text-zinc-300 font-body">Syncs directly with onboard BMS to ensure vehicles are never dispatched below critical range thresholds.</span>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-3.5 h-3.5 text-white" />
+                  <span>Smart charging routing based on real-time pack SOC</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                  <span>Driver OTP verification and zero-commission fee structure</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-6 bg-black p-6 rounded-xl border border-white/15 font-mono text-xs text-zinc-300">
-              <div className="flex justify-between pb-3 border-b border-white/10 text-white">
-                <span>// DISPATCH & TELEMATICS HUD</span>
-                <span className="text-zinc-400">ACTIVE DEPOT: TAMIL NADU</span>
+            <div className="lg:col-span-6 bg-black rounded-lg border border-white/15 p-4 font-mono text-xs space-y-3">
+              <div className="flex justify-between text-[10px] text-zinc-500 border-b border-white/10 pb-2">
+                <span>ACTIVE FLEET TELEMETRY // TAMIL NADU CORRIDOR</span>
+                <span className="text-white">LIVE_PULL</span>
               </div>
-              <div className="grid grid-cols-2 gap-3 my-4">
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10">
-                  <div className="text-zinc-500 text-[10px]">ACTIVE DRIVERS</div>
-                  <div className="text-lg font-bold text-white">128 Online</div>
+
+              <div className="space-y-2 text-xs">
+                <div className="p-2.5 rounded bg-zinc-950 border border-white/10 flex justify-between items-center">
+                  <div>
+                    <div className="text-white font-medium">Auto-EV #4182</div>
+                    <div className="text-[10px] text-zinc-500">Route: Chennai Central → OMR Tech Hub</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-medium">84% SOC</div>
+                    <div className="text-[10px] text-zinc-400">Temp: 29.8°C</div>
+                  </div>
                 </div>
-                <div className="p-3 rounded-lg bg-zinc-950 border border-white/10">
-                  <div className="text-zinc-500 text-[10px]">FLEET AVG SOC</div>
-                  <div className="text-lg font-bold text-white">82.4%</div>
+
+                <div className="p-2.5 rounded bg-zinc-950 border border-white/10 flex justify-between items-center">
+                  <div>
+                    <div className="text-white font-medium">Cargo-Trike #1094</div>
+                    <div className="text-[10px] text-zinc-500">Route: Coimbatore Industrial Zone</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-medium">42% SOC</div>
+                    <div className="text-[10px] text-zinc-400">Rerouting: Depot 3</div>
+                  </div>
                 </div>
-              </div>
-              <div className="p-3 rounded-lg bg-zinc-950 border border-white/10 space-y-1.5 text-[11px]">
-                <div className="text-zinc-400">Driver Verification: OTP & SMS Integrated</div>
-                <div className="text-zinc-400">Geofencing & Energy Range Calculation: Active</div>
               </div>
             </div>
           </div>
         )}
 
       </div>
-
     </section>
   );
 };

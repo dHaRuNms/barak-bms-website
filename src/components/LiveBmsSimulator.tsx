@@ -97,10 +97,10 @@ export const LiveBmsSimulator: React.FC = () => {
             <Radio className="w-3.5 h-3.5 text-white" />
             <span>// HARDWARE-IN-THE-LOOP (HIL) TELEMETRY BENCH</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-sans font-bold text-white tracking-[-0.03em]">
-            Interactive BMS Simulator
+          <h2 className="text-4xl sm:text-6xl font-sans font-light text-white tracking-[-0.04em]">
+            Interactive BMS Simulator.
           </h2>
-          <p className="text-zinc-400 text-sm font-normal mt-2 max-w-2xl font-body">
+          <p className="text-zinc-400 text-sm font-light mt-2 max-w-2xl font-body">
             Real-time 8S cell telemetry HUD reflecting active balance physics, ambient temperature stress, and CAN 2.0B diagnostic frames.
           </p>
         </div>
